@@ -1,4 +1,4 @@
-class History {
+export default class History {
     constructor() {}
     render(mainContainer) {
         // Create the first section (search)
