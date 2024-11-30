@@ -1,88 +1,89 @@
-class Nav {
+export default class Nav {
   constructor() {}
   render(mainContainer) {
     // Create the navbar element
     const navbar = document.createElement("nav");
     navbar.className = "navbar";
 
-    // Create the navdiv element
-    const navdiv = document.createElement("div");
-    navdiv.className = "navdiv";
+    // Create the navbar container div
+    const navbarContainer = document.createElement("div");
+    navbarContainer.className = "navbar-container";
 
-    // Create the logo element
-    const logo = document.createElement("div");
-    logo.className = "logo";
-    const logoLink = document.createElement("a");
-    logoLink.href = "./index.html";
-    logoLink.textContent = "Phu My Villa";
-    logo.appendChild(logoLink);
+    // Create the navbar logo
+    const navbarLogo = document.createElement("h1");
+    navbarLogo.className = "navbar-logo";
+    navbarLogo.textContent = "Phu My Vila"; // Logo text
+    navbarContainer.appendChild(navbarLogo);
 
-    // Create the unordered list
-    const ul = document.createElement("ul");
+    // Create the navbar links list
+    const navbarLinks = document.createElement("ul");
+    navbarLinks.className = "navbar-links";
 
-    // Manually create each list item and append them to the unordered list
-    const item1 = document.createElement("li");
-    const link1 = document.createElement("a");
-    link1.href = "./index.html#home";
-    link1.textContent = "home";
-    item1.appendChild(link1);
-    ul.appendChild(item1);
+    // Add each link as a list item manually
+    const navLink1 = document.createElement("li");
+    const navAnchor1 = document.createElement("a");
+    navAnchor1.href = "index.html";
+    navAnchor1.textContent = "Home";
+    navLink1.appendChild(navAnchor1);
+    navbarLinks.appendChild(navLink1);
 
-    const item2 = document.createElement("li");
-    const link2 = document.createElement("a");
-    link2.href = "./index.html#book";
-    link2.textContent = "book";
-    item2.appendChild(link2);
-    ul.appendChild(item2);
+    const navLink2 = document.createElement("li");
+    const navAnchor2 = document.createElement("a");
+    navAnchor2.href = "book.html";
+    navAnchor2.textContent = "Book";
+    navLink2.appendChild(navAnchor2);
+    navbarLinks.appendChild(navLink2);
 
-    const item3 = document.createElement("li");
-    const link3 = document.createElement("a");
-    link3.href = "./index.html#about";
-    link3.textContent = "about";
-    item3.appendChild(link3);
-    ul.appendChild(item3);
+    const navLink3 = document.createElement("li");
+    const navAnchor3 = document.createElement("a");
+    navAnchor3.href = "about.html";
+    navAnchor3.textContent = "About";
+    navLink3.appendChild(navAnchor3);
+    navbarLinks.appendChild(navLink3);
 
-    const item4 = document.createElement("li");
-    const link4 = document.createElement("a");
-    link4.href = "./html/history.html";
-    link4.textContent = "history";
-    item4.appendChild(link4);
-    ul.appendChild(item4);
+    const navLink4 = document.createElement("li");
+    const navAnchor4 = document.createElement("a");
+    navAnchor4.href = "history.html";
+    navAnchor4.textContent = "History";
+    navLink4.appendChild(navAnchor4);
+    navbarLinks.appendChild(navLink4);
 
-    const item5 = document.createElement("li");
-    const link5 = document.createElement("a");
-    link5.href = "./index.html#contact";
-    link5.textContent = "contact";
-    item5.appendChild(link5);
-    ul.appendChild(item5);
+    const navLink5 = document.createElement("li");
+    const navAnchor5 = document.createElement("a");
+    navAnchor5.href = "contact.html";
+    navAnchor5.textContent = "Contact";
+    navLink5.appendChild(navAnchor5);
+    navbarLinks.appendChild(navLink5);
 
-    const item6 = document.createElement("li");
-    const link6 = document.createElement("a");
-    link6.href = "./index.html#location";
-    link6.textContent = "location";
-    item6.appendChild(link6);
-    ul.appendChild(item6);
+    const navLink6 = document.createElement("li");
+    const navAnchor6 = document.createElement("a");
+    navAnchor6.href = "location.html";
+    navAnchor6.textContent = "Location";
+    navLink6.appendChild(navAnchor6);
+    navbarLinks.appendChild(navLink6);
 
-    const item7 = document.createElement("li");
-    const link7 = document.createElement("a");
-    link7.href = "./html/sign-up.html";
-    link7.textContent = "sign up";
-    item7.appendChild(link7);
-    ul.appendChild(item7);
+    const navLink7 = document.createElement("li");
+    const navAnchor7 = document.createElement("a");
+    navAnchor7.href = "signup.html";
+    navAnchor7.textContent = "Sign Up";
+    navLink7.appendChild(navAnchor7);
+    navbarLinks.appendChild(navLink7);
 
-    const item8 = document.createElement("li");
-    const link8 = document.createElement("a");
-    link8.href = "./html/sign-in.html";
-    link8.textContent = "sign in";
-    item8.appendChild(link8);
-    ul.appendChild(item8);
+    const navLink8 = document.createElement("li");
+    const navAnchor8 = document.createElement("a");
+    navAnchor8.href = "signin.html";
+    navAnchor8.textContent = "Sign In";
+    navLink8.appendChild(navAnchor8);
+    navbarLinks.appendChild(navLink8);
 
-    // Append the logo and the unordered list to the navdiv
-    navdiv.appendChild(logo);
-    navdiv.appendChild(ul);
+    // Append the navbar links to the navbar container
+    navbarContainer.appendChild(navbarLinks);
 
-    // Append the navdiv to the navbar
-    navbar.appendChild(navdiv);
+    // Append the navbar container to the navbar
+    navbar.appendChild(navbarContainer);
+
+    // Append the navbar to the document body
+    document.body.appendChild(navbar);
 
     // Finally, append the navbar to the body or another container
     mainContainer.appendChild(navbar);

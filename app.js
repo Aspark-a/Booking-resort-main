@@ -1,7 +1,8 @@
+import Admin from "./pages/admin.js";
+import BookingHistory from "./pages/history.js";
 import Home from "./pages/home.js";
-import Login from "./pages/login.js";
 import Register from "./pages/register.js";
-
+import Signin from "./pages/signin.js";
 class App {
   constructor() {
     this.mainContainer = document.getElementById("app");
@@ -16,13 +17,11 @@ class App {
 
 // 1 project = 1 app
 const app = new App();
-// render giao dien
-if (localStorage.getItem("currentUser")) {
-  const home = new Home();
-  app.renderComponent(home);
-} else {
-  const login = new Login();
-  app.renderComponent(login);
-}
+const home = new Home();
+const login = new Signin();
+const register = new Register();
+const admin = new Admin();
+const history = new BookingHistory();
+app.renderComponent(register);
 
 export default app;
