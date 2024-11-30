@@ -3,6 +3,12 @@ import Footer from "../component/footer.js";
 import Nav from "../component/nav.js";
 import Home from "./home.js";
 import Signin from "./signin.js";
+import {firebaseApp} from "../firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
 
 export default class Register {
   constructor() {
@@ -110,10 +116,37 @@ export default class Register {
 
     // Process registration logic
     // create account by firebase auth
-
-    alert("Account created successfully! Proceed to sign in.");
-    this.goto_signin();
+    const auth = getAuth(firebaseApp);
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        // luu them username
+        updateProfile(user, {
+          displayName: username,
+          photoURL:
+            "https://i.pinimg.com/236x/a3/9b/7b/a39b7b7bd7012a4f6fd2030c50e91d0e.jpg",
+        })
+          .then(() => {
+            console.log("User profile updated");
+          })
+          .catch((error) => {
+            alert("Update profile error:", error);
+          });
+        console.log(user);
+        alert("Account created successfully! Proceed to sign in.");
+        this.goto_signin();
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        alert(errorMessage);
+      });
   }
+
+      
+
+
+  
 
   goto_signin() {
     const signin = new Signin();

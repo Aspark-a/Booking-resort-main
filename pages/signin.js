@@ -3,6 +3,11 @@ import Footer from "../component/footer.js";
 import Nav from "../component/nav.js";
 import Home from "./home.js";
 import Register from "./register.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+import { firebaseApp } from "../data/firebase-app.js";
 
 export default class Signin {
   constructor() {
@@ -81,7 +86,20 @@ export default class Signin {
       return;
     }
     // login by firebase auth
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        alert("login success");
+        this.goto_home();
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
   }
+
   goto_register() {
     const register = new Register();
     app.renderComponent(register);

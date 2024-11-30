@@ -1,4 +1,5 @@
 import Footer from "../component/footer.js";
+import app from "../app.js";
 import Nav from "../component/nav.js";
 
 export default class Home {
@@ -16,6 +17,7 @@ export default class Home {
     // Create the carousel container
     const carousel = document.createElement("div");
     carousel.className = "carousel";
+    carousel.id = "carousel";
 
     // Create the carousel slides container
     const carouselSlides = document.createElement("div");
@@ -158,7 +160,7 @@ export default class Home {
 
     // Create the second section (About)
     const sectionAbout = document.createElement("section");
-    sectionAbout.id = "about";
+    sectionAbout.id = "welcome";
 
     const containerAbout = document.createElement("div");
     containerAbout.className = "container flex";
@@ -187,6 +189,7 @@ export default class Home {
     const aboutButton = document.createElement("button");
     aboutButton.className = "primary-btn";
     aboutButton.textContent = "ABOUT US";
+    aboutButton.addEventListener("click", this.scrollToAbout.bind(this));
     leftDiv.appendChild(aboutButton);
 
     const rightDiv = document.createElement("div");
@@ -276,6 +279,7 @@ export default class Home {
     // Create "About Us" section
     const aboutSection = document.createElement("section");
     aboutSection.className = "about-section";
+    aboutSection.id = "about";
 
     const aboutTitle = document.createElement("h1");
     aboutTitle.textContent = "About Us";
@@ -299,6 +303,7 @@ export default class Home {
     // Create "Contact Us" section
     const contactSection = document.createElement("section");
     contactSection.className = "contact-section";
+    contactSection.id = "contact";
 
     const contactTitle = document.createElement("h2");
     contactTitle.textContent = "Contact Us";
@@ -339,6 +344,7 @@ export default class Home {
     // Create "Find Us" section
     const mapSection = document.createElement("section");
     mapSection.className = "map-section";
+    mapSection.id = "location";
 
     const mapTitle = document.createElement("h2");
     mapTitle.textContent = "Find Us";
@@ -363,4 +369,46 @@ export default class Home {
     // add footer
     this.footer.render(mainContainer);
   }
+
+  scrollToAbout() {
+    const target_section = document.getElementById("about");
+    target_section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    })
+  }
+
+  scrollToBook() {
+    const target_section = document.getElementById("book");
+    target_section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    })
+  }
+
+  scrollToHome() {
+    const target_section = document.getElementById("home");
+    target_section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    })
+  }
+
+  scrollToContact() {
+    const target_section = document.getElementById("contact");
+    target_section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    })
+  }
+
+  scrollToLocation() {
+    const target_section = document.getElementById("location");
+    target_section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    })
+  }
 }
+
+

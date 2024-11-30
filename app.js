@@ -22,6 +22,6 @@ const login = new Signin();
 const register = new Register();
 const admin = new Admin();
 const history = new BookingHistory();
-app.renderComponent(register);
+app.renderComponent(home);
 
 export default app;
