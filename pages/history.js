@@ -1,89 +1,129 @@
-export default class History {
-    constructor() {}
-    render(mainContainer) {
-        // Create the first section (search)
-const sectionSearch = document.createElement('section');
-sectionSearch.id = 'search';
+import Footer from "../component/footer.js";
+import Nav from "../component/nav.js";
 
-const formSearch = document.createElement('form');
+export default class BookingHistory {
+  constructor() {
+    this.nav = new Nav();
+    this.footer = new Footer();
 
-const inputSearch = document.createElement('input');
-inputSearch.type = 'text';
-inputSearch.placeholder = 'Type your phone';
-inputSearch.id = 'search_inp';
-formSearch.appendChild(inputSearch);
+    // Add title to the page
+    document.querySelector(
+      "head"
+    ).innerHTML += `<title>Booking History</title>`;
+  }
+  render(mainContainer) {
+    // Add navigation
+    this.nav.render(mainContainer);
 
-const buttonSearch = document.createElement('button');
-buttonSearch.id = 'search_submit';
-buttonSearch.textContent = 'Search';
-formSearch.appendChild(buttonSearch);
+    // Create the booking history container
+    const historyContainer = document.createElement("div");
+    historyContainer.className = "booking-history-container";
 
-sectionSearch.appendChild(formSearch);
+    // Create the header
+    const header = document.createElement("h1");
+    header.textContent = "Booking History";
+    historyContainer.appendChild(header);
 
-// Create the second section (table)
-const sectionTable = document.createElement('section');
-sectionTable.id = 'table';
+    // Create the search bar
+    const searchBar = document.createElement("div");
+    searchBar.className = "search-bar";
 
-const noFoundDiv = document.createElement('div');
-noFoundDiv.className = 'no_found';
+    const searchInput = document.createElement("input");
+    searchInput.type = "text";
+    searchInput.id = "searchInput";
+    searchInput.placeholder = "Search by phone number...";
+    searchBar.appendChild(searchInput);
 
-const imgNoFound = document.createElement('img');
-imgNoFound.src = 'https://img.freepik.com/free-vector/hand-drawn-no-data-concept_52683-127823.jpg';
-imgNoFound.alt = 'no found data';
-noFoundDiv.appendChild(imgNoFound);
+    const searchButton = document.createElement("button");
+    searchButton.id = "search_btn";
+    searchButton.textContent = "Search";
+    searchBar.appendChild(searchButton);
 
-const pNoFound = document.createElement('p');
-pNoFound.textContent = "You didn't book yet, ";
-const anchorNoFound = document.createElement('a');
-anchorNoFound.href = '../index.html#book';
-anchorNoFound.textContent = 'try now';
-pNoFound.appendChild(anchorNoFound);
-noFoundDiv.appendChild(pNoFound);
+    historyContainer.appendChild(searchBar);
 
-sectionTable.appendChild(noFoundDiv);
+    // Create the data table
+    const dataTable = document.createElement("table");
+    dataTable.className = "data-table";
 
-// Create the table element
-const table = document.createElement('table');
-table.className = 'content-table hidden';
+    // Create the table head
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
 
-// Create thead element
-const thead = document.createElement('thead');
-const headerRow = document.createElement('tr');
+    // Create table headers
+    const th1 = document.createElement("th");
+    th1.textContent = "Arrival Date";
+    headerRow.appendChild(th1);
 
-// Create header cells
-const thDate = document.createElement('th');
-thDate.textContent = 'Date';
-headerRow.appendChild(thDate);
+    const th2 = document.createElement("th");
+    th2.textContent = "Adults";
+    headerRow.appendChild(th2);
 
-const thAdults = document.createElement('th');
-thAdults.textContent = 'Adults';
-headerRow.appendChild(thAdults);
+    const th3 = document.createElement("th");
+    th3.textContent = "Children";
+    headerRow.appendChild(th3);
 
-const thChildren = document.createElement('th');
-thChildren.textContent = 'Children';
-headerRow.appendChild(thChildren);
+    const th4 = document.createElement("th");
+    th4.textContent = "Phone Number";
+    headerRow.appendChild(th4);
 
-const thPhone = document.createElement('th');
-thPhone.textContent = 'Phone number';
-headerRow.appendChild(thPhone);
+    const th5 = document.createElement("th");
+    th5.textContent = "Type";
+    headerRow.appendChild(th5);
 
-const thOption = document.createElement('th');
-thOption.textContent = 'Option';
-headerRow.appendChild(thOption);
+    const th6 = document.createElement("th");
+    th6.textContent = "Status";
+    headerRow.appendChild(th6);
 
-// Append the header row to thead
-thead.appendChild(headerRow);
-table.appendChild(thead);
+    thead.appendChild(headerRow);
+    dataTable.appendChild(thead);
 
-// Create tbody element
-const tbody = document.createElement('tbody');
-table.appendChild(tbody);
+    // Create the table body
+    const tbody = document.createElement("tbody");
+    tbody.id = "dataBody";
 
-// Append the table to the second section
-sectionTable.appendChild(table);
+    // Create a sample data row
+    const dataRow = document.createElement("tr");
 
-// Finally, append both sections to the main or body
-mainContainer.appendChild(sectionSearch);
-mainContainer.appendChild(sectionTable);
-    }
+    const td1 = document.createElement("td");
+    td1.textContent = "2023-10-01";
+    dataRow.appendChild(td1);
+
+    const td2 = document.createElement("td");
+    td2.textContent = "2";
+    dataRow.appendChild(td2);
+
+    const td3 = document.createElement("td");
+    td3.textContent = "1";
+    dataRow.appendChild(td3);
+
+    const td4 = document.createElement("td");
+    td4.textContent = "1234567890";
+    dataRow.appendChild(td4);
+
+    const td5 = document.createElement("td");
+    td5.textContent = "Hotel";
+    dataRow.appendChild(td5);
+
+    const td6 = document.createElement("td");
+    const statusSpan = document.createElement("span");
+    statusSpan.className = "status available";
+    statusSpan.textContent = "Available";
+    td6.appendChild(statusSpan);
+    dataRow.appendChild(td6);
+
+    tbody.appendChild(dataRow);
+    dataTable.appendChild(tbody);
+    historyContainer.appendChild(dataTable);
+
+    // Append the history container to the main container
+    mainContainer.appendChild(historyContainer);
+
+    // Add footer
+    this.footer.render(mainContainer);
+
+    // Optionally, add any JavaScript file specific to this page
+    const script = document.createElement("script");
+    script.src = "./js/booking-history.js";
+    mainContainer.appendChild(script);
+  }
 }

@@ -1,147 +1,91 @@
-class Footer {
+export default class Footer {
   constructor() {}
   render(mainContainer) {
     // Create the footer element
     const footer = document.createElement("footer");
-    footer.className = "site-footer";
+    footer.className = "footer";
 
-    // Create the container div
-    const container = document.createElement("div");
-    container.className = "container";
+    // Create the footer container div
+    const footerContainer = document.createElement("div");
+    footerContainer.className = "footer-container";
 
-    // Create the row div
-    const row = document.createElement("div");
-    row.className = "row";
+    // Create the footer logo div
+    const footerLogo = document.createElement("div");
+    footerLogo.className = "footer-logo";
 
-    // Create the first column for "About"
-    const col1 = document.createElement("div");
-    col1.className = "col-sm-12 col-md-6";
-    const h6About = document.createElement("h6");
-    h6About.textContent = "About";
-    const pAbout = document.createElement("p");
-    pAbout.className = "text-justify";
-    pAbout.innerHTML = `Scanfcode.com <i>CODE WANTS TO BE SIMPLE </i> is an initiative to
-help the upcoming programmers with the code. Scanfcode focuses on
-providing the most efficient code or snippets as the code wants to
-be simple. We will help programmers build up concepts in different
-programming languages that include C, C++, Java, HTML, CSS,
-Bootstrap, JavaScript, PHP, Android, SQL and Algorithm.`;
-    col1.appendChild(h6About);
-    col1.appendChild(pAbout);
+    const logoTitle = document.createElement("h1");
+    logoTitle.textContent = "Phu My Vila"; // Can be styled to look like a logo
+    footerLogo.appendChild(logoTitle);
 
-    // Create the second column for "Categories"
-    const col2 = document.createElement("div");
-    col2.className = "col-xs-6 col-md-3";
-    const h6Categories = document.createElement("h6");
-    h6Categories.textContent = "Categories";
-    const ulCategories = document.createElement("ul");
-    ulCategories.className = "footer-links";
+    // Append the footer logo to the footer container
+    footerContainer.appendChild(footerLogo);
 
-    const liCat1 = document.createElement("li");
-    const linkCat1 = document.createElement("a");
-    linkCat1.href = "http://scanfcode.com/category/c-language/";
-    linkCat1.textContent = "C";
-    liCat1.appendChild(linkCat1);
-    ulCategories.appendChild(liCat1);
+    // Create the footer links list
+    const footerLinks = document.createElement("ul");
+    footerLinks.className = "footer-links";
 
-    const liCat2 = document.createElement("li");
-    const linkCat2 = document.createElement("a");
-    linkCat2.href = "http://scanfcode.com/category/front-end-development/";
-    linkCat2.textContent = "UI Design";
-    liCat2.appendChild(linkCat2);
-    ulCategories.appendChild(liCat2);
+    // Add each link as a list item manually
+    const link1 = document.createElement("li");
+    const anchor1 = document.createElement("a");
+    anchor1.href = "index.html";
+    anchor1.textContent = "Home";
+    link1.appendChild(anchor1);
+    footerLinks.appendChild(link1);
 
-    const liCat3 = document.createElement("li");
-    const linkCat3 = document.createElement("a");
-    linkCat3.href = "http://scanfcode.com/category/back-end-development/";
-    linkCat3.textContent = "PHP";
-    liCat3.appendChild(linkCat3);
-    ulCategories.appendChild(liCat3);
+    const link2 = document.createElement("li");
+    const anchor2 = document.createElement("a");
+    anchor2.href = "book.html";
+    anchor2.textContent = "Book";
+    link2.appendChild(anchor2);
+    footerLinks.appendChild(link2);
 
-    const liCat4 = document.createElement("li");
-    const linkCat4 = document.createElement("a");
-    linkCat4.href = "http://scanfcode.com/category/java-programming-language/";
-    linkCat4.textContent = "Java";
-    liCat4.appendChild(linkCat4);
-    ulCategories.appendChild(liCat4);
+    const link3 = document.createElement("li");
+    const anchor3 = document.createElement("a");
+    anchor3.href = "about.html";
+    anchor3.textContent = "About";
+    link3.appendChild(anchor3);
+    footerLinks.appendChild(link3);
 
-    const liCat5 = document.createElement("li");
-    const linkCat5 = document.createElement("a");
-    linkCat5.href = "http://scanfcode.com/category/android/";
-    linkCat5.textContent = "Android";
-    liCat5.appendChild(linkCat5);
-    ulCategories.appendChild(liCat5);
+    const link4 = document.createElement("li");
+    const anchor4 = document.createElement("a");
+    anchor4.href = "history.html";
+    anchor4.textContent = "History";
+    link4.appendChild(anchor4);
+    footerLinks.appendChild(link4);
 
-    const liCat6 = document.createElement("li");
-    const linkCat6 = document.createElement("a");
-    linkCat6.href = "http://scanfcode.com/category/templates/";
-    linkCat6.textContent = "Templates";
-    liCat6.appendChild(linkCat6);
-    ulCategories.appendChild(liCat6);
+    const link5 = document.createElement("li");
+    const anchor5 = document.createElement("a");
+    anchor5.href = "contact.html";
+    anchor5.textContent = "Contact";
+    link5.appendChild(anchor5);
+    footerLinks.appendChild(link5);
 
-    col2.appendChild(h6Categories);
-    col2.appendChild(ulCategories);
+    const link6 = document.createElement("li");
+    const anchor6 = document.createElement("a");
+    anchor6.href = "location.html";
+    anchor6.textContent = "Location";
+    link6.appendChild(anchor6);
+    footerLinks.appendChild(link6);
 
-    // Create the third column for "Quick Links"
-    const col3 = document.createElement("div");
-    col3.className = "col-xs-6 col-md-3";
-    const h6QuickLinks = document.createElement("h6");
-    h6QuickLinks.textContent = "Quick Links";
-    const ulQuickLinks = document.createElement("ul");
-    ulQuickLinks.className = "footer-links";
+    const link7 = document.createElement("li");
+    const anchor7 = document.createElement("a");
+    anchor7.href = "signup.html";
+    anchor7.textContent = "Sign Up";
+    link7.appendChild(anchor7);
+    footerLinks.appendChild(link7);
 
-    const liLink1 = document.createElement("li");
-    const linkLink1 = document.createElement("a");
-    linkLink1.href = "http://scanfcode.com/about/";
-    linkLink1.textContent = "About Us";
-    liLink1.appendChild(linkLink1);
-    ulQuickLinks.appendChild(liLink1);
+    const link8 = document.createElement("li");
+    const anchor8 = document.createElement("a");
+    anchor8.href = "signin.html";
+    anchor8.textContent = "Sign In";
+    link8.appendChild(anchor8);
+    footerLinks.appendChild(link8);
 
-    const liLink2 = document.createElement("li");
-    const linkLink2 = document.createElement("a");
-    linkLink2.href = "http://scanfcode.com/contact/";
-    linkLink2.textContent = "Contact Us";
-    liLink2.appendChild(linkLink2);
-    ulQuickLinks.appendChild(liLink2);
+    // Append the footer links to the footer container
+    footerContainer.appendChild(footerLinks);
 
-    const liLink3 = document.createElement("li");
-    const linkLink3 = document.createElement("a");
-    linkLink3.href = "http://scanfcode.com/contribute-at-scanfcode/";
-    linkLink3.textContent = "Contribute";
-    liLink3.appendChild(linkLink3);
-    ulQuickLinks.appendChild(liLink3);
-
-    const liLink4 = document.createElement("li");
-    const linkLink4 = document.createElement("a");
-    linkLink4.href = "http://scanfcode.com/privacy-policy/";
-    linkLink4.textContent = "Privacy Policy";
-    liLink4.appendChild(linkLink4);
-    ulQuickLinks.appendChild(liLink4);
-
-    const liLink5 = document.createElement("li");
-    const linkLink5 = document.createElement("a");
-    linkLink5.href = "http://scanfcode.com/sitemap/";
-    linkLink5.textContent = "Sitemap";
-    liLink5.appendChild(linkLink5);
-    ulQuickLinks.appendChild(liLink5);
-
-    col3.appendChild(h6QuickLinks);
-    col3.appendChild(ulQuickLinks);
-
-    // Append all columns to the row
-    row.appendChild(col1);
-    row.appendChild(col2);
-    row.appendChild(col3);
-
-    // Append the row to the container
-    container.appendChild(row);
-
-    // Create the horizontal rule
-    const hr = document.createElement("hr");
-    container.appendChild(hr);
-
-    // Append the container to the footer
-    footer.appendChild(container);
+    // Append the footer container to the footer
+    footer.appendChild(footerContainer);
 
     // Finally, append the footer to the body or another container
     mainContainer.appendChild(footer);

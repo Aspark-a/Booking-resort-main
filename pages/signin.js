@@ -1,6 +1,20 @@
+import app from "../app.js";
+import Footer from "../component/footer.js";
+import Nav from "../component/nav.js";
+import Home from "./home.js";
+import Register from "./register.js";
+
 export default class Signin {
-  constructor() {}
+  constructor() {
+    this.nav = new Nav();
+    this.footer = new Footer();
+
+    // them title cho tag (ten trang web)
+    document.querySelector("head").innerHTML += `<title>Signin</title>`;
+  }
   render(mainContainer) {
+    // add nav
+    this.nav.render(mainContainer);
     // Create the main div for the login page
     const loginPageDiv = document.createElement("div");
     loginPageDiv.className = "login-page";
@@ -13,23 +27,26 @@ export default class Signin {
     const loginForm = document.createElement("form");
     loginForm.className = "login-form";
 
-    const loginUsernameInput = document.createElement("input");
-    loginUsernameInput.type = "text";
-    loginUsernameInput.placeholder = "username";
+    const loginEmailInput = document.createElement("input");
+    loginEmailInput.type = "email";
+    loginEmailInput.placeholder = "email";
 
     const loginPasswordInput = document.createElement("input");
     loginPasswordInput.type = "password";
     loginPasswordInput.placeholder = "password";
 
     const loginButton = document.createElement("button");
+    loginButton.type = "submit";
     loginButton.textContent = "login";
+    loginButton.addEventListener("click", this.check_login.bind(this));
 
     const loginMessage = document.createElement("p");
     loginMessage.className = "message";
-    loginMessage.innerHTML =
-      'Not registered? <a href="#" id="">Create an account</a>';
+    loginMessage.innerHTML = "Not registered? <a>Create an account</a>";
+    loginMessage.style.cursor = "pointer";
+    loginMessage.addEventListener("click", this.goto_register.bind(this));
 
-    loginForm.appendChild(loginUsernameInput);
+    loginForm.appendChild(loginEmailInput);
     loginForm.appendChild(loginPasswordInput);
     loginForm.appendChild(loginButton);
     loginForm.appendChild(loginMessage);
@@ -42,5 +59,35 @@ export default class Signin {
 
     // Finally, append the loginPageDiv to the body or any other container
     mainContainer.appendChild(loginPageDiv);
+
+    // add footer
+    this.footer.render(mainContainer);
+  }
+
+  check_login(event) {
+    event.preventDefault();
+
+    // Get form inputs
+    const email = document.querySelector(
+      ".login-form input[placeholder='email']"
+    ).value;
+    const password = document.querySelector(
+      ".login-form input[placeholder='password']"
+    ).value;
+
+    // Validate input
+    if (!username || !email || !password || !confirmPassword) {
+      alert("All fields are required.");
+      return;
+    }
+    // login by firebase auth
+  }
+  goto_register() {
+    const register = new Register();
+    app.renderComponent(register);
+  }
+  goto_home() {
+    const home = new Home();
+    app.renderComponent(home);
   }
 }

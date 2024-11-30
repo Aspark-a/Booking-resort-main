@@ -1,7 +1,77 @@
+import Footer from "../component/footer.js";
+import Nav from "../component/nav.js";
+
 export default class Home {
-  constructor() {}
+  constructor() {
+    this.nav = new Nav();
+    this.footer = new Footer();
+
+    // them title cho tag (ten trang web)
+    document.querySelector("head").innerHTML += `<title>Home</title>`;
+  }
   render(mainContainer) {
-    // Create the first section (Book)
+    // add nav 
+    this.nav.render(mainContainer);
+    // Carousel ----------------------------------------------------------
+    // Create the carousel container
+    const carousel = document.createElement("div");
+    carousel.className = "carousel";
+
+    // Create the carousel slides container
+    const carouselSlides = document.createElement("div");
+    carouselSlides.className = "carousel-slides";
+
+    // Create the first slide (active)
+    const slide1 = document.createElement("div");
+    slide1.className = "carousel-slide active";
+    const img1 = document.createElement("img");
+    img1.src = "./asset/1.jpg";
+    img1.alt = "Slide 1";
+    slide1.appendChild(img1);
+    carouselSlides.appendChild(slide1);
+
+    // Create the second slide
+    const slide2 = document.createElement("div");
+    slide2.className = "carousel-slide";
+    const img2 = document.createElement("img");
+    img2.src = "./asset/2.jpg";
+    img2.alt = "Slide 2";
+    slide2.appendChild(img2);
+    carouselSlides.appendChild(slide2);
+
+    // Create the third slide
+    const slide3 = document.createElement("div");
+    slide3.className = "carousel-slide";
+    const img3 = document.createElement("img");
+    img3.src = "./asset/4.jpg";
+    img3.alt = "Slide 3";
+    slide3.appendChild(img3);
+    carouselSlides.appendChild(slide3);
+
+    // Append the slides container to the carousel
+    carousel.appendChild(carouselSlides);
+
+    // Create the previous button
+    const prevButton = document.createElement("button");
+    prevButton.className = "carousel-button prev";
+    prevButton.setAttribute("onclick", "changeSlide(-1)");
+    prevButton.innerHTML = "&#10094;"; // Left arrow character
+    carousel.appendChild(prevButton);
+
+    // Create the next button
+    const nextButton = document.createElement("button");
+    nextButton.className = "carousel-button next";
+    nextButton.setAttribute("onclick", "changeSlide(1)");
+    nextButton.innerHTML = "&#10095;"; // Right arrow character
+    carousel.appendChild(nextButton);
+
+    // Append the carousel to the document body
+    mainContainer.appendChild(carousel);
+    // create script to control carousel
+    const script_carousel = document.createElement("script");
+    script_carousel.src = "./js/carousel.js";
+    mainContainer.appendChild(script_carousel);
+    // Create the first section (Book) ------------------------------------
     const sectionBook = document.createElement("section");
     sectionBook.id = "book";
 
@@ -111,7 +181,7 @@ export default class Home {
 
     const paragraph = document.createElement("p");
     paragraph.textContent =
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque tempora culpa iusto quia nostrum minima, at id vel obcaecati unde cum ex, illum sed odio eveniet quas rem cupiditate incidunt.";
+      "Welcome to Phu My Vila, a serene and luxurious retreat located in the heart of [Location]. Our villa is designed to provide you with an unforgettable experience, combining comfort, elegance, and the beauty of nature. Whether you are looking for a romantic getaway, a family vacation, or a place to host special events, our villa offers the perfect setting.";
     leftDiv.appendChild(paragraph);
 
     const aboutButton = document.createElement("button");
@@ -203,9 +273,94 @@ export default class Home {
     sectionCounter.appendChild(containerCounter);
     sectionCounter.appendChild(bookingDiv);
 
+    // Create "About Us" section
+    const aboutSection = document.createElement("section");
+    aboutSection.className = "about-section";
+
+    const aboutTitle = document.createElement("h1");
+    aboutTitle.textContent = "About Us";
+    aboutSection.appendChild(aboutTitle);
+
+    const aboutParagraph1 = document.createElement("p");
+    aboutParagraph1.textContent =
+      "Welcome to Phu My Vila, a serene and luxurious retreat located in the heart of [Location]. Our villa is designed to provide you with an unforgettable experience, combining comfort, elegance, and the beauty of nature. Whether you are looking for a romantic getaway, a family vacation, or a place to host special events, our villa offers the perfect setting.";
+    aboutSection.appendChild(aboutParagraph1);
+
+    const aboutParagraph2 = document.createElement("p");
+    aboutParagraph2.textContent =
+      "At Phu My Vila, we pride ourselves on our attention to detail and exceptional service. Our dedicated team is here to ensure that your stay is as enjoyable and relaxing as possible. Explore the stunning surroundings, unwind by the pool, or indulge in local cuisine prepared by our talented chefs.";
+    aboutSection.appendChild(aboutParagraph2);
+
+    const aboutParagraph3 = document.createElement("p");
+    aboutParagraph3.textContent =
+      "Book your stay with us today and discover the magic of Phu My Vila!";
+    aboutSection.appendChild(aboutParagraph3);
+
+    // Create "Contact Us" section
+    const contactSection = document.createElement("section");
+    contactSection.className = "contact-section";
+
+    const contactTitle = document.createElement("h2");
+    contactTitle.textContent = "Contact Us";
+    contactSection.appendChild(contactTitle);
+
+    const contactForm = document.createElement("form");
+    contactForm.action = "your-server-endpoint";
+    contactForm.method = "post";
+
+    const nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.name = "name";
+    nameInput.placeholder = "Your Name";
+    nameInput.required = true;
+    contactForm.appendChild(nameInput);
+
+    const emailInput = document.createElement("input");
+    emailInput.type = "email";
+    emailInput.name = "email";
+    emailInput.placeholder = "Your Email";
+    emailInput.required = true;
+    contactForm.appendChild(emailInput);
+
+    const messageTextarea = document.createElement("textarea");
+    messageTextarea.name = "message";
+    messageTextarea.rows = 5;
+    messageTextarea.placeholder = "Your Message";
+    messageTextarea.required = true;
+    contactForm.appendChild(messageTextarea);
+
+    const submitButton_contact = document.createElement("button");
+    submitButton_contact.type = "submit";
+    submitButton_contact.textContent = "Send Message";
+    contactForm.appendChild(submitButton_contact);
+
+    contactSection.appendChild(contactForm);
+
+    // Create "Find Us" section
+    const mapSection = document.createElement("section");
+    mapSection.className = "map-section";
+
+    const mapTitle = document.createElement("h2");
+    mapTitle.textContent = "Find Us";
+    mapSection.appendChild(mapTitle);
+
+    const mapIframe = document.createElement("iframe");
+    mapIframe.className = "map";
+    mapIframe.src =
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509777!2d144.9537353153181!3d-37.81720997975127!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f1c4c91%3A0x5045675218ce6e0!2sPhu%20My%20Vila!5e0!3m2!1sen!2sus!4v1618551291951!5m2!1sen!2sus";
+    mapIframe.allowFullscreen = true;
+    mapIframe.loading = "lazy";
+    mapSection.appendChild(mapIframe);
+
     // Append all sections to the body or another container
     mainContainer.appendChild(sectionBook);
     mainContainer.appendChild(sectionAbout);
     mainContainer.appendChild(sectionCounter);
+    mainContainer.appendChild(aboutSection);
+    mainContainer.appendChild(contactSection);
+    mainContainer.appendChild(mapSection);
+
+    // add footer
+    this.footer.render(mainContainer);
   }
 }

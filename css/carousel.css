@@ -1,0 +1,68 @@
+.carousel {
+  position: relative;
+  max-width: 500px; /* Adjust as needed */
+  margin: auto;
+  overflow: hidden;
+}
+
+.carousel-slides {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.carousel-slide {
+  min-width: 100%;
+  position: relative;
+}
+
+.carousel-slide img {
+  width: auto;
+  height: 700px;
+  display: block;
+  margin: auto;
+}
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 10;
+}
+
+.carousel-button.prev {
+  left: 10px;
+}
+
+.carousel-button.next {
+  right: 10px;
+}
+
+/* Blur effect for left and right space */
+.carousel-slide::before,
+.carousel-slide::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: inherit;
+  filter: blur(15px);
+  z-index: 1;
+}
+
+.carousel-slide::before {
+  left: 0;
+}
+
+.carousel-slide::after {
+  right: 0;
+}
+
+.carousel-slide.active::before,
+.carousel-slide.active::after {
+  display: none; /* Hide blur on active slide */
+}
