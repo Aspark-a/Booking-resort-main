@@ -1,5 +1,12 @@
 import Footer from "../component/footer.js";
 import Nav from "../component/nav.js";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
+import { database } from "../firebase-app.js";
 
 export default class Admin {
   constructor() {
@@ -9,7 +16,7 @@ export default class Admin {
     // them title cho tag (ten trang web)
     document.querySelector("head").innerHTML += `<title>Admin</title>`;
   }
-  render(mainContainer) {
+  async render(mainContainer) {
     // add nav
     this.nav.render(mainContainer);
     // Create the admin container
@@ -89,49 +96,7 @@ export default class Admin {
     const tbody = document.createElement("tbody");
     tbody.id = "dataBody";
 
-    // Create a sample data row
-    const dataRow = document.createElement("tr");
 
-    const td1 = document.createElement("td");
-    td1.textContent = "2023-10-01";
-    dataRow.appendChild(td1);
-
-    const td2 = document.createElement("td");
-    td2.textContent = "2";
-    dataRow.appendChild(td2);
-
-    const td3 = document.createElement("td");
-    td3.textContent = "1";
-    dataRow.appendChild(td3);
-
-    const td4 = document.createElement("td");
-    td4.textContent = "1234567890";
-    dataRow.appendChild(td4);
-
-    const td5 = document.createElement("td");
-    td5.textContent = "Hotel";
-    dataRow.appendChild(td5);
-
-    const td6 = document.createElement("td");
-    const statusSpan = document.createElement("span");
-    statusSpan.className = "status available";
-    statusSpan.textContent = "Available";
-    td6.appendChild(statusSpan);
-    dataRow.appendChild(td6);
-
-    const td7 = document.createElement("td");
-    const editButton = document.createElement("button");
-    editButton.setAttribute("onclick", "openEditForm(this)");
-    editButton.textContent = "Edit";
-    td7.appendChild(editButton);
-
-    const removeButton = document.createElement("button");
-    removeButton.setAttribute("onclick", "removeRow(this)");
-    removeButton.textContent = "Remove";
-    td7.appendChild(removeButton);
-
-    dataRow.appendChild(td7);
-    tbody.appendChild(dataRow);
 
     dataTable.appendChild(tbody);
     adminContainer.appendChild(dataTable);
@@ -268,8 +233,75 @@ export default class Admin {
     this.footer.render(mainContainer);
 
     // add js file
-    const script = document.createElement("script");
-    script.src = "./js/admin.js";
-    mainContainer.appendChild(script);
+    // const script = document.createElement("script");
+    // script.src = "./js/admin.js";
+    // mainContainer.appendChild(script);
+        // Add the table body to the data table
+        await this.show_booking();
+  }
+  async show_booking() {
+    const table = document.getElementById("dataBody");
+          // lay du lieu tu firestore 
+    const querySnapshot = await getDocs(collection(database, "booking"));
+    const _this = this; // trong arrow func khong co ngu canh => giu lai du lieu cua this
+    querySnapshot.forEach((doc) => {
+      const row = _this.renderRowData(doc.data());
+      table.appendChild(row);
+    });
+    
+
+  }
+  renderRowData(rowdata) {
+    // Create a sample data row
+    const dataRow = document.createElement("tr");
+
+    const td1 = document.createElement("td");
+    td1.textContent = rowdata.arrival_date;
+    dataRow.appendChild(td1);
+
+    const td2 = document.createElement("td");
+    td2.textContent = rowdata.adults;
+    dataRow.appendChild(td2);
+
+    const td3 = document.createElement("td");
+    td3.textContent = rowdata.children;
+    dataRow.appendChild(td3);
+
+    const td4 = document.createElement("td");
+    td4.textContent = rowdata.phone_num;
+    dataRow.appendChild(td4);
+
+    const td5 = document.createElement("td");
+    td5.textContent = rowdata.type;
+    dataRow.appendChild(td5);
+
+    const td6 = document.createElement("td");
+    const statusSpan = document.createElement("span");
+    if (rowdata.status == "booked") {
+      statusSpan.className = "status booked";
+      statusSpan.textContent = "Booked";
+    } else if (rowdata.status == "canceled") {
+      statusSpan.className = "status canceled";
+      statusSpan.textContent = "Canceled";
+    } else if (rowdata.status == "available") {
+      statusSpan.className = "status available";
+      statusSpan.textContent = "Available";
+    }
+    td6.appendChild(statusSpan);
+    dataRow.appendChild(td6);
+    const td7 = document.createElement("td");
+    const editButton = document.createElement("button");
+    editButton.setAttribute("onclick", "openEditForm(this)");
+    editButton.textContent = "Edit";
+    td7.appendChild(editButton);
+
+    const removeButton = document.createElement("button");
+    removeButton.setAttribute("onclick", "removeRow(this)");
+    removeButton.textContent = "Remove";
+    td7.appendChild(removeButton);
+
+    dataRow.appendChild(td7);
+    return dataRow;
+
   }
 }

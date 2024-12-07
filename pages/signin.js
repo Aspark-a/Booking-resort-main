@@ -7,7 +7,7 @@ import {
   getAuth,
   signInWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
-import { firebaseApp } from "../data/firebase-app.js";
+import { firebaseApp } from "../firebase-app.js";
 
 export default class Signin {
   constructor() {
@@ -81,7 +81,7 @@ export default class Signin {
     ).value;
 
     // Validate input
-    if (!username || !email || !password || !confirmPassword) {
+    if (!email || !password) {
       alert("All fields are required.");
       return;
     }

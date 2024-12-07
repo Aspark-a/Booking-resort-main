@@ -1,6 +1,11 @@
 import Footer from "../component/footer.js";
 import app from "../app.js";
 import Nav from "../component/nav.js";
+import { database, firebaseApp } from "../firebase-app.js";
+import {
+  addDoc,
+  collection,
+} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
 
 export default class Home {
   constructor() {
@@ -150,6 +155,7 @@ export default class Home {
     const submitButton = document.createElement("input");
     submitButton.type = "submit";
     submitButton.value = "BOOK";
+    submitButton.addEventListener("click", this.createBooking.bind(this));
     submitButton.id = "submit_form";
     form.appendChild(submitButton);
 
@@ -370,6 +376,55 @@ export default class Home {
     this.footer.render(mainContainer);
   }
 
+  async createBooking(event) {
+    event.preventDefault();
+    const arrival_date = document.getElementById("Araival-Date").value;
+    const adults = document.getElementById("Adults").value;
+    const children = document.getElementById("Children").value;
+    const phone_num = document.getElementById("Phone-number").value;
+    const type = document.getElementById("type").value;
+  
+    // validate form
+    if (!arrival_date || !adults || !children || !phone_num || !type) {
+      alert("Fill the form");
+      return;
+    } else if (
+      isNaN(parseInt(phone_num)) ||
+      isNaN(parseInt(adults)) ||
+      isNaN(parseInt(children))
+    ) {
+      alert("Please type number in field");
+      return;
+    } else if (Date.now() > Date.parse(arrival_date)) {
+      // kiem tra ngay den
+      alert("Please choose date again");
+      return;
+    } else {
+      // add du lieu vao bang
+      const bk_obj = {
+
+        arrival_date: arrival_date,
+        adults: adults,
+        children: children,
+        phone_num: phone_num,
+        type: type,
+        status: "available",
+        updated_date: "2024-04-17",
+        updated_admin_id: "1",
+      };
+      try {
+        const docRef = await addDoc(collection(database, "booking"), bk_obj);
+        console.log("Document written with ID: ", docRef.id);
+        alert("Create post successfully");
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+
+      // hien thong bao thanh cong
+      alert("Book successful, you can check the History page");
+
+    }
+  }
   scrollToAbout() {
     const target_section = document.getElementById("about");
     target_section.scrollIntoView({
