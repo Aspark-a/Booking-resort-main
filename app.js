@@ -20,6 +20,6 @@ const home = new Home();
 const login = new Signin();
 const admin = new Admin();
 const history = new BookingHistory();
-app.renderComponent(admin);
+app.renderComponent(home);
 
 export default app;
