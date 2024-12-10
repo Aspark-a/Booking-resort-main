@@ -13,10 +13,10 @@ export default class Home {
     this.footer = new Footer();
 
     // them title cho tag (ten trang web)
-    document.querySelector("head").innerHTML += `<title>Home</title>`;
+    document.title = "Home";
   }
   render(mainContainer) {
-    // add nav 
+    // add nav
     this.nav.render(mainContainer);
     // Carousel ----------------------------------------------------------
     // Create the carousel container
@@ -383,7 +383,7 @@ export default class Home {
     const children = document.getElementById("Children").value;
     const phone_num = document.getElementById("Phone-number").value;
     const type = document.getElementById("type").value;
-  
+
     // validate form
     if (!arrival_date || !adults || !children || !phone_num || !type) {
       alert("Fill the form");
@@ -402,15 +402,12 @@ export default class Home {
     } else {
       // add du lieu vao bang
       const bk_obj = {
-
         arrival_date: arrival_date,
         adults: adults,
         children: children,
         phone_num: phone_num,
         type: type,
         status: "available",
-        updated_date: "2024-04-17",
-        updated_admin_id: "1",
       };
       try {
         const docRef = await addDoc(collection(database, "booking"), bk_obj);
@@ -422,7 +419,6 @@ export default class Home {
 
       // hien thong bao thanh cong
       alert("Book successful, you can check the History page");
-
     }
   }
   scrollToAbout() {
@@ -430,7 +426,7 @@ export default class Home {
     target_section.scrollIntoView({
       behavior: "smooth",
       block: "start",
-    })
+    });
   }
 
   scrollToBook() {
@@ -438,7 +434,7 @@ export default class Home {
     target_section.scrollIntoView({
       behavior: "smooth",
       block: "start",
-    })
+    });
   }
 
   scrollToHome() {
@@ -446,7 +442,7 @@ export default class Home {
     target_section.scrollIntoView({
       behavior: "smooth",
       block: "start",
-    })
+    });
   }
 
   scrollToContact() {
@@ -454,7 +450,15 @@ export default class Home {
     target_section.scrollIntoView({
       behavior: "smooth",
       block: "start",
-    })
+    });
+  }
+
+  scrollToAbout() {
+    const target_section = document.getElementById("about");
+    target_section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   }
 
   scrollToLocation() {
@@ -462,8 +466,6 @@ export default class Home {
     target_section.scrollIntoView({
       behavior: "smooth",
       block: "start",
-    })
+    });
   }
 }
-
-

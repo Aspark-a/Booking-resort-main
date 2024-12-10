@@ -1,4 +1,4 @@
-let currentSlide = 0;
+currentSlide = 0;
 
 function showSlide(index) {
   const slides = document.querySelectorAll(".carousel-slide");

@@ -4,7 +4,7 @@ import {
   collection,
   getDocs,
   doc,
-  getDoc,
+  updateDoc,
 } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
 import { database } from "../firebase-app.js";
 
@@ -14,7 +14,7 @@ export default class Admin {
     this.footer = new Footer();
 
     // them title cho tag (ten trang web)
-    document.querySelector("head").innerHTML += `<title>Admin</title>`;
+    document.title = "Admin";
   }
   async render(mainContainer) {
     // add nav
@@ -41,16 +41,10 @@ export default class Admin {
     const searchButton = document.createElement("button");
     searchButton.id = "search_btn";
     searchButton.textContent = "Search";
+    searchButton.addEventListener("click", this.search.bind(this));
     searchBar.appendChild(searchButton);
 
     adminContainer.appendChild(searchBar);
-
-    // Create the add row button
-    const addRowButton = document.createElement("button");
-    addRowButton.className = "add-row-button";
-    addRowButton.setAttribute("onclick", "openAddForm()");
-    addRowButton.textContent = "Add Row";
-    adminContainer.appendChild(addRowButton);
 
     // Create the data table
     const dataTable = document.createElement("table");
@@ -96,8 +90,6 @@ export default class Admin {
     const tbody = document.createElement("tbody");
     tbody.id = "dataBody";
 
-
-
     dataTable.appendChild(tbody);
     adminContainer.appendChild(dataTable);
 
@@ -115,7 +107,7 @@ export default class Admin {
     // Create the close button
     const closeButton = document.createElement("span");
     closeButton.className = "close";
-    closeButton.setAttribute("onclick", "closeEditForm()");
+    closeButton.addEventListener("click", this.closeEditForm.bind(this));
     closeButton.innerHTML = "&times;"; // Close symbol
     formContent.appendChild(closeButton);
 
@@ -135,9 +127,10 @@ export default class Admin {
     editEntryForm.appendChild(labelArrivalDate);
 
     const inputArrivalDate = document.createElement("input");
-    inputArrivalDate.type = "date";
+    inputArrivalDate.type = "text";
+    inputArrivalDate.disabled = true;
     inputArrivalDate.id = "arrivalDate";
-    inputArrivalDate.required = true;
+
     editEntryForm.appendChild(inputArrivalDate);
 
     // Create label and input for Adults
@@ -148,8 +141,8 @@ export default class Admin {
 
     const inputAdults = document.createElement("input");
     inputAdults.type = "number";
+    inputAdults.disabled = true;
     inputAdults.id = "adults";
-    inputAdults.required = true;
     editEntryForm.appendChild(inputAdults);
 
     // Create label and input for Children
@@ -160,8 +153,8 @@ export default class Admin {
 
     const inputChildren = document.createElement("input");
     inputChildren.type = "number";
+    inputChildren.disabled = true;
     inputChildren.id = "children";
-    inputChildren.required = true;
     editEntryForm.appendChild(inputChildren);
 
     // Create label and input for Phone Number
@@ -172,8 +165,8 @@ export default class Admin {
 
     const inputPhoneNumber = document.createElement("input");
     inputPhoneNumber.type = "text";
+    inputPhoneNumber.disabled = true;
     inputPhoneNumber.id = "phoneNumber";
-    inputPhoneNumber.required = true;
     editEntryForm.appendChild(inputPhoneNumber);
 
     // Create label and input for Type
@@ -184,8 +177,8 @@ export default class Admin {
 
     const inputType = document.createElement("input");
     inputType.type = "text";
+    inputType.disabled = true;
     inputType.id = "type";
-    inputType.required = true;
     editEntryForm.appendChild(inputType);
 
     // Create label and select for Status
@@ -216,8 +209,9 @@ export default class Admin {
 
     // Create the Save button
     const saveButton = document.createElement("button");
-    saveButton.type = "submit";
+    saveButton.type = "button";
     saveButton.textContent = "Save";
+    saveButton.id = "save_edit";
     editEntryForm.appendChild(saveButton);
 
     // Append the form to the form content container
@@ -231,59 +225,118 @@ export default class Admin {
 
     // add footer
     this.footer.render(mainContainer);
-
-    // add js file
-    // const script = document.createElement("script");
-    // script.src = "./js/admin.js";
-    // mainContainer.appendChild(script);
-        // Add the table body to the data table
-        await this.show_booking();
+    await this.show_booking();
   }
+
+  async search() {
+    const input = document.getElementById("searchInput");
+    const table = document.getElementById("dataBody");
+    table.innerHTML = "";
+    if (input.value === "" || input.value.length < 10) {
+      alert("Please enter a phone number");
+    } else {
+      // lay du lieu tu firestore
+      const querySnapshot = await getDocs(collection(database, "booking"));
+      const _this = this; // trong arrow func khong co ngu canh => giu lai du lieu cua this
+      querySnapshot.forEach((doc) => {
+        if (doc.data().phone_num == input.value) {
+          const row = _this.renderRowData(doc);
+          table.appendChild(row);
+        }
+      });
+    }
+  }
+
+  closeEditForm() {
+    const form = document.getElementById("editForm");
+    form.style.display = "none";
+  }
+
   async show_booking() {
     const table = document.getElementById("dataBody");
-          // lay du lieu tu firestore 
+    table.innerHTML = "";
+    // lay du lieu tu firestore
     const querySnapshot = await getDocs(collection(database, "booking"));
     const _this = this; // trong arrow func khong co ngu canh => giu lai du lieu cua this
     querySnapshot.forEach((doc) => {
-      const row = _this.renderRowData(doc.data());
+      const row = _this.renderRowData(doc);
       table.appendChild(row);
     });
-    
-
   }
+
+  openEditForm(data) {
+    // dien du lieu cu vao form
+    document.getElementById("arrivalDate").value = data.data().arrival_date;
+    document.getElementById("adults").value = data.data().adults;
+    document.getElementById("children").value = data.data().children;
+    document.getElementById("phoneNumber").value = data.data().phone_num;
+    document.getElementById("type").value = data.data().type;
+    document.getElementById("status").value = data.data().status;
+    const _this = this;
+
+    // cho form hien thi
+    const form = document.getElementById("editForm");
+    form.style.display = "block";
+
+    const save_button = document.getElementById("save_edit");
+    save_button.addEventListener("click", async function () {
+      const newStatus = document.getElementById("status").value;
+      await _this.editForm(data.id, newStatus);
+    });
+  }
+
+  async editForm(dataId, newStatus) {
+    try {
+      console.log(dataId, newStatus);
+      const _this = this;
+      // Reference the document you want to update
+      const docRef = doc(database, "booking", dataId);
+      // Update the document
+      await updateDoc(docRef, {
+        status: newStatus,
+      });
+      alert("Update info successfully");
+      _this.closeEditForm();
+      // load lai bang => cap nhat status
+      await _this.show_booking();
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
+
   renderRowData(rowdata) {
     // Create a sample data row
     const dataRow = document.createElement("tr");
 
     const td1 = document.createElement("td");
-    td1.textContent = rowdata.arrival_date;
+    td1.textContent = rowdata.data().arrival_date;
     dataRow.appendChild(td1);
 
     const td2 = document.createElement("td");
-    td2.textContent = rowdata.adults;
+    td2.textContent = rowdata.data().adults;
     dataRow.appendChild(td2);
 
     const td3 = document.createElement("td");
-    td3.textContent = rowdata.children;
+    td3.textContent = rowdata.data().children;
     dataRow.appendChild(td3);
 
     const td4 = document.createElement("td");
-    td4.textContent = rowdata.phone_num;
+    td4.textContent = rowdata.data().phone_num;
     dataRow.appendChild(td4);
 
     const td5 = document.createElement("td");
-    td5.textContent = rowdata.type;
+    td5.textContent = rowdata.data().type;
     dataRow.appendChild(td5);
 
     const td6 = document.createElement("td");
     const statusSpan = document.createElement("span");
-    if (rowdata.status == "booked") {
+    if (rowdata.data().status == "booked") {
       statusSpan.className = "status booked";
       statusSpan.textContent = "Booked";
-    } else if (rowdata.status == "canceled") {
+    } else if (rowdata.data().status == "canceled") {
       statusSpan.className = "status canceled";
       statusSpan.textContent = "Canceled";
-    } else if (rowdata.status == "available") {
+    } else if (rowdata.data().status == "available") {
       statusSpan.className = "status available";
       statusSpan.textContent = "Available";
     }
@@ -291,17 +344,11 @@ export default class Admin {
     dataRow.appendChild(td6);
     const td7 = document.createElement("td");
     const editButton = document.createElement("button");
-    editButton.setAttribute("onclick", "openEditForm(this)");
+    editButton.addEventListener("click", this.openEditForm.bind(this, rowdata));
     editButton.textContent = "Edit";
     td7.appendChild(editButton);
 
-    const removeButton = document.createElement("button");
-    removeButton.setAttribute("onclick", "removeRow(this)");
-    removeButton.textContent = "Remove";
-    td7.appendChild(removeButton);
-
     dataRow.appendChild(td7);
     return dataRow;
-
   }
 }

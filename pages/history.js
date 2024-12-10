@@ -14,9 +14,7 @@ export default class BookingHistory {
     this.footer = new Footer();
 
     // Add title to the page
-    document.querySelector(
-      "head"
-    ).innerHTML += `<title>Booking History</title>`;
+    document.title = "History";
   }
   render(mainContainer) {
     // Add navigation
@@ -43,7 +41,7 @@ export default class BookingHistory {
 
     const searchButton = document.createElement("button");
     searchButton.id = "search_btn";
-    searchButton: addEventListener("click", this.search_history.bind(this));
+    searchButton.addEventListener("click", this.search_history.bind(this));
     searchButton.textContent = "Search";
     searchBar.appendChild(searchButton);
 
@@ -89,8 +87,6 @@ export default class BookingHistory {
     const tbody = document.createElement("tbody");
     tbody.id = "dataBody";
 
-    
-
     dataTable.appendChild(tbody);
     historyContainer.appendChild(dataTable);
 
@@ -100,10 +96,6 @@ export default class BookingHistory {
     // Add footer
     this.footer.render(mainContainer);
 
-    // Optionally, add any JavaScript file specific to this page
-    // const script = document.createElement("script");
-    // script.src = "./js/booking-history.js";
-    // mainContainer.appendChild(script);
   }
   async search_history() {
     const input = document.getElementById("searchInput");
@@ -111,17 +103,16 @@ export default class BookingHistory {
     if (input.value === "" || input.value.length < 10) {
       alert("Please enter a phone number");
     } else {
-          // lay du lieu tu firestore 
-    const querySnapshot = await getDocs(collection(database, "booking"));
-    const _this = this; // trong arrow func khong co ngu canh => giu lai du lieu cua this
-    querySnapshot.forEach((doc) => {
-      if (doc.data().phone_num == input.value) {
-      const row = _this.renderRowData(doc.data());
-      table.appendChild(row);
-      }
-    });
+      // lay du lieu tu firestore
+      const querySnapshot = await getDocs(collection(database, "booking"));
+      const _this = this; // trong arrow func khong co ngu canh => giu lai du lieu cua this
+      querySnapshot.forEach((doc) => {
+        if (doc.data().phone_num == input.value) {
+          const row = _this.renderRowData(doc.data());
+          table.appendChild(row);
+        }
+      });
     }
-
   }
   renderRowData(rowdata) {
     // Create a sample data row

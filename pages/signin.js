@@ -1,13 +1,12 @@
 import app from "../app.js";
 import Footer from "../component/footer.js";
 import Nav from "../component/nav.js";
+import Admin from "./admin.js";
 import Home from "./home.js";
-import Register from "./register.js";
 import {
   getAuth,
   signInWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
-import { firebaseApp } from "../firebase-app.js";
 
 export default class Signin {
   constructor() {
@@ -15,7 +14,7 @@ export default class Signin {
     this.footer = new Footer();
 
     // them title cho tag (ten trang web)
-    document.querySelector("head").innerHTML += `<title>Signin</title>`;
+    document.title = "Home";
   }
   render(mainContainer) {
     // add nav
@@ -47,9 +46,9 @@ export default class Signin {
 
     const loginMessage = document.createElement("p");
     loginMessage.className = "message";
-    loginMessage.innerHTML = "Not registered? <a>Create an account</a>";
+    loginMessage.innerHTML =
+      "If you had error, please contact with your manager";
     loginMessage.style.cursor = "pointer";
-    loginMessage.addEventListener("click", this.goto_register.bind(this));
 
     loginForm.appendChild(loginEmailInput);
     loginForm.appendChild(loginPasswordInput);
@@ -92,20 +91,16 @@ export default class Signin {
         // Signed in
         const user = userCredential.user;
         alert("login success");
-        this.goto_home();
+        this.goto_admin();
       })
       .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
+        alert(errorMessage);
       });
   }
 
-  goto_register() {
-    const register = new Register();
-    app.renderComponent(register);
-  }
-  goto_home() {
-    const home = new Home();
+  goto_admin() {
+    const home = new Admin();
     app.renderComponent(home);
   }
 }

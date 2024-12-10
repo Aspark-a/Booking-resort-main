@@ -1,9 +1,12 @@
 import Home from "../pages/home.js";
 import app from "../app.js";
-import Register from "../pages/register.js";
 import Signin from "../pages/signin.js";
 import BookingHistory from "../pages/history.js";
-
+import {
+  getAuth,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+import { firebaseApp } from "../firebase-app.js";
 export default class Nav {
   constructor() {}
   render(mainContainer) {
@@ -68,25 +71,11 @@ export default class Nav {
     navLink6.appendChild(navAnchor6);
     navbarLinks.appendChild(navLink6);
 
-    const navLink7 = document.createElement("li");
-    const navAnchor7 = document.createElement("a");
-    navAnchor7.addEventListener("click", this.goToSignUp.bind(this));
-    navAnchor7.textContent = "Sign Up";
-    navLink7.appendChild(navAnchor7);
-    navbarLinks.appendChild(navLink7);
-
     const navLink8 = document.createElement("li");
     const navAnchor8 = document.createElement("a");
-    navAnchor8.addEventListener("click", this.goToSignIn.bind(this));
-    navAnchor8.textContent = "Sign In";
+    navAnchor8.id = "admin";
     navLink8.appendChild(navAnchor8);
     navbarLinks.appendChild(navLink8);
-
-    const navLink9 = document.createElement("li");
-    const navAnchor9 = document.createElement("a");
-    navAnchor9.textContent = "Sign Out";
-    navLink9.appendChild(navAnchor9);
-    navbarLinks.appendChild(navLink9);
 
     // Append the navbar links to the navbar container
     navbarContainer.appendChild(navbarLinks);
@@ -94,21 +83,54 @@ export default class Nav {
     // Append the navbar container to the navbar
     navbar.appendChild(navbarContainer);
 
-    // Append the navbar to the document body
-    document.body.appendChild(navbar);
-
     // Finally, append the navbar to the body or another container
     mainContainer.appendChild(navbar);
+    this.checkSignedIn();
   }
+
+  checkSignedIn() {
+    try {
+      const auth = getAuth(firebaseApp);
+      const user = auth.currentUser;
+      const admin_link = document.getElementById("admin");
+      if (!user) {
+        // hien thi chu admin
+        admin_link.innerText = "Admin";
+        admin_link.addEventListener("click", this.goToSignIn.bind(this));
+      } else {
+        // co user => hien thi hinh avatar
+        admin_link.innerText = "Logout";
+        // bat su kien chuyen sang account
+        admin_link.addEventListener("click", this.logout.bind(this));
+      }
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
+
   scrollToAbout() {
     const home = new Home();
     app.renderComponent(home);
-    Home.scrollToAbout();
+    home.scrollToAbout();
   }
 
   goToHistory() {
     const history = new BookingHistory();
     app.renderComponent(history);
+  }
+
+  logout() {
+    const auth = getAuth(firebaseApp);
+    const _this = this;
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        _this.goToSignIn();
+      })
+      .catch((error) => {
+        // An error happened.
+        alert(error);
+      });
   }
 
   scrollToBook() {
@@ -132,11 +154,6 @@ export default class Nav {
     const home = new Home();
     app.renderComponent(home);
     home.scrollToLocation();
-  }
-
-  goToSignUp() {
-    const register = new Register();
-    app.renderComponent(register);
   }
 
   goToSignIn() {
