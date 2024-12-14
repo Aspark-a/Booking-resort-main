@@ -359,7 +359,7 @@ export default class Home {
     const mapIframe = document.createElement("iframe");
     mapIframe.className = "map";
     mapIframe.src =
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509777!2d144.9537353153181!3d-37.81720997975127!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f1c4c91%3A0x5045675218ce6e0!2sPhu%20My%20Vila!5e0!3m2!1sen!2sus!4v1618551291951!5m2!1sen!2sus";
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3921.9654331999386!2d107.06570477570179!3d10.581875562750794!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175123ae227e8a1%3A0x3266cc7ff1daf036!2zxJDGsOG7nW5nIHPhu5EgMywgUGjDuiBN4bu5LCBUw6JuIFRow6BuaCwgQsOgIFLhu4thIC0gVsWpbmcgVMOgdSwgVmlldG5hbQ!5e0!3m2!1sen!2s!4v1734160819580!5m2!1sen!2s";
     mapIframe.allowFullscreen = true;
     mapIframe.loading = "lazy";
     mapSection.appendChild(mapIframe);
